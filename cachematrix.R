@@ -1,15 +1,48 @@
-## Put comments here that give an overall description of what your
-## functions do
+## makeCacheMatrix <- function(x = matrix())
+## "x" should be passed as a square numeric matrix
 
-## Write a short comment describing this function
+## This function given a square matrix creates a vector 
+## of functions that can be passed to the cachesolve 
+##function where the inverse will be calculated.  
 
 makeCacheMatrix <- function(x = matrix()) {
-
+  m<-NULL
+  set<- function(y) {
+    x<<-y
+    m<<-NULL
+  }
+  get<-function()x
+  setInv<-function(solve) m<<-solve
+  getInv<-function() m
+  list(set = set, get = get, setInv=setInv, getInv=getInv)
+  
+  
 }
 
 
-## Write a short comment describing this function
+## cacheSolve <- function(x, ...)
+
+## this function should be passed a vector of functions 
+## output by the makecacheMatrix function.  Alternativly 
+## this can be called by passing the makecacheMatrix(x), 
+## where 'x' is a square matrix.  cacheSolve checks to 
+## see if x has been previously submitted, if yes, the 
+## cached value is for the matrix inverse isreturned, if no, 
+## the inverse is calculated and returned. 
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  ## Return a matrix that is the inverse of 'x'
+  m<-x$getInv()
+  if(!is.null(m)){
+    message("getting cached data")
+    return(m)
+  }
+  data<-x$get()
+  m<-solve(data,...)
+  x$setInv(m)
+  m
 }
+
+
+
+
